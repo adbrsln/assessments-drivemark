@@ -20,8 +20,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome')->name('home');
-// Route::get('/dashboard' , App\Http\Livewire\Loan\Listing::class);
+// Route::get('/', 'welcome')->name('home');
+Route::redirect('/', 'login', 301);
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)
         ->name('login');
@@ -52,4 +52,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', LogoutController::class)
         ->name('logout');
+});
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', \App\Http\Livewire\Loan\Listing::class)->name('application.list');
+    Route::get('/create', \App\Http\Livewire\Loan\Create::class)->name('application.create');
+    Route::get('/{uuid}', \App\Http\Livewire\Loan\Show::class)->name('application.show');
 });
